@@ -1,0 +1,87 @@
+body {
+    min-width: 1519px;
+    min-height: 964px;
+    text-align: center;
+    font-family: system-ui;
+    background: rgb(94,218,202);
+    background: linear-gradient(180deg, rgba(94,218,202,1) 0%, rgba(181,228,216,1) 25%, rgba(0,212,255,1) 100%);
+}
+.welcome {
+    padding-top: 20px;
+    margin-bottom: 20px;
+    font-size: 40px;
+    margin-bottom: 30px;
+    font-weight: 400;
+}
+.formblock {
+    width: 25%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 7%;
+    border: 1px solid black;
+    border-radius: 4px;
+    font-family: system-ui;
+    font-size: 17px;
+    text-align: center;
+    padding-top: 0px;
+    padding-bottom: 2%;
+    background-color: aliceblue;
+    
+}
+input,select,button {
+    display: block;
+    width: 65%;
+    height: 28px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    border: 1px solid black;
+    border-radius: 0px;
+}
+select {
+    font-family: system-ui;
+    font-size: 17px;
+}
+.label {
+    text-align: start;
+    margin-left: 25%;
+    margin-top: 25px;
+    margin-bottom: 8px;
+}
+button {
+    margin-top: 40px;
+    background-color:cadetblue;
+    height: 40px;
+    color: white;
+    border: 1px solid black;
+    margin-bottom: 10px;
+}
+button:hover {
+    background-color: darkolivegreen;
+    
+}
+.alert {
+    position: absolute;
+    width: 16%;
+    text-align: left;
+    font-family: system-ui;
+    font-size: 13px;
+    color: red;
+    font-family: Comfortaa;
+    box-sizing: border-box;
+    left: 42%;
+    padding-left: 0px;
+    padding-top: 1px;
+}
+.about {
+    color:black;
+    position:absolute;
+    left: 15%;
+    top: 4%;
+}
+.resultmessage {
+    color: red;
+    margin-top: 15px;
+}
