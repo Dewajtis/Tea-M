@@ -1,0 +1,246 @@
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	    <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="height=device-height">
+        <title>Tea M</title>
+    </head>
+    <body *ngIf="USERISLEAD && userInProject"> 
+        <!--NAVIGATION ____________________________________________________________________________________________-->
+        <div class="mainbuttonpanel">
+            <button *ngIf="isTeamPanel" class="mainbutton" (click)="openUserPanel()">USER</button>
+            <button *ngIf="isUserPanel" class="mainbutton black">USER</button>
+            <button *ngIf="isUserPanel" class="mainbutton" (click)="openTeamPanel()">TEAM</button>
+            <button *ngIf="isTeamPanel" class="mainbutton black">TEAM</button>
+            <button class="mainbutton" (click)="openAddListPanel()">ADD LIST</button>
+            <button class="mainbutton" (click)="deleteProject()">DELETE PROJECT</button>
+            <button class="mainbutton"><a class="buttonlink" [routerLink]="['/home', userinf[0]._id]">HOME</a></button>
+        </div>
+
+        <!--ADD/RENAME LIST ________________________________________________________________________________________-->
+        <div *ngIf="isAddListPanel || isEditListPanel" class="addlistpanel">
+            <div *ngIf="isAddListPanel" class = "label">Name of new list</div>
+            <div *ngIf="isEditListPanel" class = "label">New name of list</div>
+            <input type="text" name="addeditlistname" [(ngModel)]="addeditlistname"
+                #paddeditlistname="ngModel" required/>
+            <div class="buttons">
+                <button *ngIf="isAddListPanel" [disabled]="paddeditlistname.errors" (click)="addList()" class="addlistbuttons">Add</button>
+                <button *ngIf="isEditListPanel" [disabled]="paddeditlistname.errors" (click)="renameList()" class="addlistbuttons">Rename</button>
+                <button (click)="closeAddEditListPanel()" class="addlistbuttons" id="close1">Close</button>
+            </div>
+        </div>
+        
+        <!--ADD NEW TASK ___________________________________________________________________________________________-->
+        <div *ngIf="isAddTaskPanel" class="addedittaskpanel">
+            <div>
+                <div class="addtasklabel">Task name</div>
+                <input type="text" class="tasknameinput" name="taskname"
+                    [(ngModel)]="taskname" #ptaskname="ngModel" required/>
+            </div>
+            <div>
+                <div class="taskdatelabel">Start date</div>
+                <input class="tasknameinput" type="date" name="taskstartdate"
+                    [(ngModel)]="taskstartdate" required/>
+                <div class="taskdatelabel">Due date</div>
+                <input class="tasknameinput" type="date" name="taskduedate"
+                    [(ngModel)]="taskduedate" required/>
+            </div>
+            <div>
+                <div class="attachuserlabel">Attached member</div>
+                <select class="listattachuser" name="attachusername"
+                    [(ngModel)]="attachusername" #pattachusername="ngModel" required>
+                    <option default></option>
+                    <option>{{projectinf[0].teamlead.name}}</option>
+                    <option *ngFor="let item of projectinf[0].members">{{item.name}}</option>
+                </select>
+            </div>
+            <div>
+                <div class="addtasklabel">Description</div>
+                <textarea type="text" class="taskdescription" name="taskdescription"
+                    [(ngModel)]="taskdescription" #ptaskdescription="ngModel" required></textarea>
+            </div>
+            <button [disabled]="ptaskname.errors || pattachusername.errors || ptaskdescription.errors" 
+                (click)="addTask()" class="addlistbuttons addtaskbuttons">Add task</button>
+            <button (click)="closeAddTaskPanel()" class="addlistbuttons addtaskbuttons" id="close2">Close</button>
+        </div>
+        
+        <!--EDIT TASK ____________________________________________________________________________________________________-->
+        <div *ngIf="isEditTaskPanel" class="addedittaskpanel">
+            <div class="taskname">{{worktaskinf[0].taskname}}</div>
+            <div> 
+                <div class="addtasklabel">Task name</div>
+                <input type="text" class="tasknameinput" name="edittaskname"
+                    [(ngModel)]="edittaskname" required/>
+            </div>
+            <div>
+                <div>
+                    <div class="taskdatelabel edittaskdatelabel">Start date</div>
+                    <div class="inline dateinf"><b>{{editstartdateinf}}</b></div>
+                    <div class="taskdatelabel">Due date</div>
+                    <div class="inline dateinf"><b>{{editduedateinf}}</b></div>
+                </div>
+                <div class="taskdatelabel">New date</div>
+                <input class="tasknameinput" type="date" name="edittaskstartdate" 
+                    [(ngModel)]="edittaskstartdate"/>
+                <input class="tasknameinput" type="date" name="edittaskduedate" 
+                    [(ngModel)]="edittaskduedate"/>
+            </div>
+            <div>
+                <div class="attachuserlabel">Attached <b>{{worktaskinf[0].mainmember}}</b></div>
+                <select class="listattachuser" name="editattachusername"
+                    [(ngModel)]="editattachusername" #peditattachusername="ngModel" required>
+                    <option default></option>
+                    <option>{{projectinf[0].teamlead.name}}</option>
+                    <option *ngFor="let item of projectinf[0].members">{{item.name}}</option>
+                </select>
+            </div>
+            <div>
+                <div class="addtasklabel">Description</div>
+                <textarea type="text" class="taskdescription" name="edittaskdescription"
+                    [(ngModel)]="edittaskdescription" #pedittaskdescription="ngModel" required></textarea>
+            </div>
+            <button [disabled]="peditattachusername.errors" (click)="updateTaskInf()" class="addlistbuttons edittaskbuttons editstatusbuttons">Update fields</button>
+
+            <!--Текстовий вивід статусу-->
+            <div *ngIf="!(userinf[0].username==worktaskinf[0].mainmember)">
+                <div class="taskstatus">Status: <b>{{worktaskinf[0].status}}</b></div>
+                <div class="taskstatus">Progress: <b>{{worktaskinf[0].percent}}%</b></div>
+            </div>
+                <!--___________________________________________________-->
+            <!--Редагування статусу-->
+            <div *ngIf="userinf[0].username==worktaskinf[0].mainmember">
+                <div class="editstatustask">Status: </div>
+                <select class="listattachuser" name="edittaskstatus"
+                    [(ngModel)]="edittaskstatus">
+                    <option>NOT STARTED</option>
+                    <option>IN PROGRESS</option>
+                    <option>PAUSE</option>
+                    <option>IS PROBLEM</option>
+                    <option>ASSESSMENT</option>
+                    <option>DONE</option>
+                </select>
+                <div class="editprogresstask">Progress (%): </div>
+                <input type="number" class="tasknameinput tasknumberinput" name="taskpercentinput"
+                    [(ngModel)]="taskpercentinput" #ptaskpercentinput="ngModel" 
+                    min="0" max="100" required/>
+                <button [disabled]="ptaskpercentinput.errors" (click)="updateTaskStatus()" 
+                    class="addlistbuttons editstatusbuttons">Update task state</button>
+            </div>
+                <!--____________________________________________________-->
+
+            <div>
+                <button (click)="deleteTask()" class="addlistbuttons edittaskbuttons">Delete task</button>
+                <button (click)="closeEditTaskPanel()" class="addlistbuttons edittaskbuttons" id="close3">Close</button>
+            </div>
+            <div class="reccomendationbox">
+                <div class="reccomendationlabel">Customer reccomendation</div>
+                <div class="onecomment reccomendationtext">{{worktaskinf[0].reccomendation}}</div>
+            </div>
+            <div class="commentslabel">Comments</div>
+            <ul class="commentsbox">
+                <li *ngFor="let replica of worktaskinf[0].comments" class="onecomment">
+                    <div><b>{{replica.name}}</b></div>
+                    <div>{{replica.comment}}</div>
+                </li>
+            </ul>
+            <div>
+                <button [disabled]="paddtaskcomment.errors" (click)="addComment()"
+                    class="addlistbuttons edittaskbuttons addcommentbutton">Add comment</button>
+                <textarea type="text" class="taskdescription" name="addtaskcomment"
+                    [(ngModel)]="addtaskcomment" #paddtaskcomment="ngModel" required></textarea>
+            </div>
+            <button (click)="closeEditTaskPanel()" class="addlistbuttons edittaskbuttons">Close</button>
+        </div>
+        
+        <!--INFO USER PANEL _________________________________________________________________________________________-->
+        <div *ngIf="isUserPanel" class="sidebar bgcolor">
+            <div class = "title">
+                User
+            </div>
+            <div class="profile">
+                account: {{userinf[0].username}}
+            </div>
+            <div class="profile">
+                role: {{userinf[0].role}}
+            </div>
+            <div class="profile">
+                email: {{userinf[0].email}}
+            </div>
+        </div>
+        
+        <!--EDIT TEAM COMPOSITION PANEL _______________________________________________________________________________-->
+        <div *ngIf="isTeamPanel" class="sidebar bgcolor">
+            <div class = "title">
+                Project team
+            </div>
+            <div class="profile">
+                Team Lead
+            </div>
+            <ul>
+                <li class="profile profileitem">
+                    <div>{{projectinf[0].teamlead.name}}</div>
+                    <div class="blue">{{projectinf[0].teamlead.email}}</div>
+                </li>
+            </ul>
+            <div class="profile">
+                Customer
+            </div>
+            <ul>
+                <li *ngIf="isCustomer" class="profile profileitem">
+                    <div>{{projectinf[0].customer.name}}</div>
+                    <div class="blue">{{projectinf[0].customer.email}}</div>
+                </li>
+                <button *ngIf="isCustomer" class="editteam" (click)="removeCustomer()">Delete</button>
+                <div *ngIf="!isCustomer">
+                    <button [disabled]="paddcustomername.errors" class="editteam" (click)="addCustomer()">Add</button>
+                    <input type="text" name="addcustomername" [(ngModel)]="addcustomername"
+                        class="membersitem" #paddcustomername="ngModel" required/>
+                </div>
+                <div *ngIf="badCustomerName" class="alert">This customer doesn`t exist</div>
+            </ul>
+            <div class="profile">
+                Team Members
+            </div>
+            <ul class="memberslist">
+                <li *ngFor="let item of projectinf[0].members" class="profile profileitem">
+                    <div>{{item.name}}</div> 
+                    <div class="blue">{{item.email}}</div>
+                    <button *ngIf="isMembers" (click)="removeMember(item.name)" 
+                        class="editteam adddeletemember">Delete</button>
+                </li>
+                <button [disabled]="paddmembername.errors" (click)="addMember()" class="editteam adddeletemember">Add</button>
+                <input type="text" name="addmembername" [(ngModel)]="addmembername"
+                    class="membersitem" #paddmembername="ngModel" required/>
+                <div *ngIf="badMemberName" class="alert">This team member doesn`t exist</div>
+            </ul>
+        </div>
+
+        <!--LIST CONTENT ___________________________________________________________________________________________________-->
+        <div class="lists">
+            <div class="title">{{projectinf[0].projectname}}</div>
+            <div class="listbox">
+                <div *ngFor="let list of projectinf[0].lists" class="list bgcolor">
+                    <button (click)="openEditListPanel(list.id,list.listname)" class="listname">{{list.listname}}</button>
+                    <div class="listitems">
+                        <button *ngFor="let task of list.tasks" (click)="openEditTaskPanel(task.listid,task.id)" class="listitem">
+                            <div *ngIf="task.status=='NOT STARTED'" class="blueviolet status">NOT STARTED</div>
+                            <div *ngIf="task.status=='IN PROGRESS'" class="blue status">IN PROGRESS</div>
+                            <div *ngIf="task.status=='IS PROBLEM'" class="red status">IS PROBLEM</div>
+                            <div *ngIf="task.status=='DONE'" class="green status">DONE</div>
+                            <div *ngIf="task.status=='PAUSE'" class="brown status">PAUSE</div>
+                            <div *ngIf="task.status=='ASSESSMENT'" class="grey status">ASSESSMENT</div>
+                            {{task.name}}
+                        </button>
+                    </div>
+                    <button (click)="openAddTaskPanel(list.id)" class="editteam">Add task</button>
+                    <button (click)="removeList(list.id)" class="editteam listeditbuttonright">Delete list</button>
+                </div>
+            </div>
+        </div>
+    </body>
+    <footer *ngIf="!userInProject">
+        <div class="afterleaveproject">You deleted this project</div>
+        <a class="afterleaveprojecthref" [routerLink]="['/home', userinf[0]._id]">Go Back</a>
+    </footer>
+</html>

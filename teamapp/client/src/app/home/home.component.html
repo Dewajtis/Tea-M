@@ -1,0 +1,98 @@
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	    <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="height=device-height">
+        <title>Tea M</title>
+    </head>
+    <body>
+        <div class="loginhrefdiv">
+            <a class="loginhref" routerLink='/login'>To Login Page</a>
+        </div>
+
+        <div *ngIf="addPanel" class="addprojectpanel">
+            <div class = "label">Name of new project</div>
+            <input type="text"
+                name = "projectname"
+                [(ngModel)]="projectname"
+                #pprojectname="ngModel"
+                required/>
+            <div class="buttons">
+                <button [disabled]="pprojectname.errors" class="addprojectbuttons" (click)="addProject()">Add</button>
+                <button class="addprojectbuttons" id="close" (click)="closePanel()">Close</button>
+            </div>
+        </div>
+
+        <div class="sidebar bgcolor">
+            <div class = "title">
+                User
+            </div>
+            <div class="profile">
+                account: {{userinf[0].username}}
+            </div>
+            <div class="profile">
+                role: {{userinf[0].role}}
+            </div>
+            <div class="profile">
+                email: {{userinf[0].email}}
+            </div>
+        </div> 
+
+        <div *ngIf="isLead" class="projects">
+            <div class="title">
+                Your projects
+            </div>
+            <div class="project bgcolor" *ngFor="let proj of userinf[0].projects">
+                {{proj.projectname}}
+                <div><a [routerLink]="['/teamleadboard', userinf[0]._id, proj.id]">
+                    Go over</a></div>
+            </div>
+            <button *ngIf="isLead" class="project buttonclass" (click)="openPanel()">Add new</button>
+        </div>
+
+
+        <div *ngIf="isMember" class="projects">
+            <div class="title">
+                Your projects
+            </div>
+            <div *ngIf="userinf[0].projects[0]==undefined">
+                <div class="emptymessage">Seems you are not involved in any projects</div>
+                <div class="emptymessage">
+                    Write to your colleagues by email
+                    <a alt="gmail" href="https://mail.google.com/mail">
+                        <img class="emptyimg" src="../assets/2.png">
+                    </a>
+                </div>
+            </div>
+            <div class="project bgcolor" *ngFor="let proj of userinf[0].projects">
+                {{proj.projectname}}
+                <div><a [routerLink]="['/memberboard', userinf[0]._id, proj.id]">
+                    Go over</a></div>
+            </div>
+        </div>
+
+
+        <div *ngIf="isCustomer" class="projects">
+            <div class="title">
+                Your projects
+            </div>
+            <div *ngIf="userinf[0].projects[0]==undefined">
+                <div class="emptymessage">Seems you are not involved in any projects</div>
+                <div class="emptymessage">
+                    Write to your colleagues by email
+                    <a alt="gmail" href="https://mail.google.com/mail">
+                        <img class="emptyimg" src="assets/2.png">
+                    </a>
+                </div>
+            </div>
+            <div class="project bgcolor" *ngFor="let proj of userinf[0].projects">
+                {{proj.projectname}}
+                <div><a [routerLink]="['/customerboard', userinf[0]._id, proj.id]">
+                    Go over</a></div>
+            </div>
+        </div>
+
+
+    </body>
+</html>

@@ -1,0 +1,126 @@
+body {
+    width: 100%;
+    font-family: system-ui;
+    margin: 0px;
+    height: 730px;
+}
+.sidebar {
+    float: left;
+    width: 25%;
+    margin: 0px;
+    min-height: 100%;
+    border-right: 8px double rgb(171, 227, 170);
+    box-sizing: border-box;
+}
+.title {
+    margin-top: 15px;
+    margin-bottom: 25px;
+    font-size: 30px;
+    padding-left: 15%;
+    color: cadetblue;
+    font-weight: 600;
+}
+.emptymessage {
+    font-size: 20px;
+    padding-left: 5%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+.emptyimg {
+    margin-left: 20px;
+    width: 40px;
+    height: 40px;
+}
+.profile {
+    font-size: 17px;
+    padding-left: 5%;
+    margin-bottom: 7px;
+}
+.projects {
+    float: left;
+    width: 75%;
+    height: 100%;
+    overflow-y: auto;
+    /*
+    background: no-repeat url("https://cdn.wallpapersafari.com/65/6/Dtfs4U.jpg");
+    background-size: cover;
+    */
+}
+.bgcolor {
+    background-color: rgb(212, 250, 223);
+}
+.project {
+    height: 700px;
+    box-sizing: border-box;
+    float: left;
+    width: 25%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 4%;
+    margin-bottom: 4%;
+    border: 1px solid black;
+    border-radius: 6px;
+    height: 18%;
+    text-align: center;
+    padding-top: 2%;
+    font-size: 17px;
+}
+.project:hover {
+    border: 2px solid grey;
+    font-weight: 600;
+    font-size: 20px;
+}
+.buttonclass {
+    padding-top: 0px;
+}
+.addprojectpanel {
+    box-sizing: border-box;
+    position: absolute;
+    width: 40%;
+    height: 40%;
+    left: 30%;
+    top: 30%;
+    background-color: rgb(218, 229, 247);
+    border-radius: 4px;
+    border: 1px solid black;
+    padding-top: 3%;
+    padding-left: 10%;
+}
+.label {
+    margin-bottom: 20px;
+}
+input {
+    width: 200px;
+    font-size: 17px;
+}
+.buttons {
+    margin-top: 30px;
+}
+.addprojectbuttons {
+    height: 35px;
+    width: 70px;
+    background-color: greenyellow;
+    border-radius: 6px;
+    border: 1px solid black;
+}
+.addprojectbuttons:hover {
+    font-weight: 600;
+}
+#close {
+    margin-left: 60px;
+}
+.loginhrefdiv {
+    position: absolute;
+    top: 20px;
+    right: 80px;
+}
+.loginhref {
+    font-size: 18px;
+    color: cadetblue;
+    text-decoration: none;
+    font-weight: 600;
+}
+.loginhref:hover {
+    color: black;
+}
